@@ -155,7 +155,7 @@ h1 {
         @include animation('r2l 5s linear -2.5s infinite');
     }
     &:nth-child(3) {
-        @include animation('r2l 7s linear -4s infinite');
+        @include animation('r2l 7s linear -4.5s infinite');
         top: 50%;
     }
     &:nth-child(4) {
