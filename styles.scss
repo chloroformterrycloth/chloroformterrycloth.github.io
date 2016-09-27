@@ -1,0 +1,159 @@
+#!./scss.sh
+@font-face {
+    font-family: 'Capture It';
+    src: url('capture.ttf');
+}
+
+@mixin animation($animate...) {
+    $max: length($animate);
+    $animations: '';
+    @for $i from 1 through $max {
+        $animations: #{$animations + nth($animate, $i)};
+        @if $i < $max {
+            $animations: #{$animations + ", "};
+        }
+    }
+    -webkit-animation: $animations;
+    -moz-animation:    $animations;
+    -o-animation:      $animations;
+    animation:         $animations;
+}
+@mixin keyframes($animationName) {
+    @-webkit-keyframes #{$animationName} {@content;}
+    @-moz-keyframes #{$animationName} {@content;}
+    @-o-keyframes #{$animationName} {@content;}
+    @keyframes #{$animationName} {@content;}
+}
+
+@include keyframes(r2l) {
+    0% {left: 100%;}
+    100% {left: -100%;}
+}
+@include keyframes(l2r) {
+    0% {left: -100%;}
+    100% {left: 100%;}
+}
+@include keyframes(wobble) {
+    0% {transform: rotate(0deg);}
+    20% {transform: rotate(-1.8deg);}
+    80% {transform: rotate(2.2deg);}
+    100% {transform: rotate(0deg);}
+}
+@include keyframes(wheel) {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(359deg);}
+}
+@include keyframes(zoom-out) {
+    0% {transform: scale(4,4);}
+    100% {transform: scale(1,1);}
+}
+
+body, html {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+body {
+    overflow: hidden;
+    @include animation('zoom-out 30s ease-in');
+}
+h1 {
+    font-family: 'Capture It', sans-serif;
+    font-weight: normal;
+    font-size: 20vw;
+    color: white;
+    &.heading {
+        position: absolute;
+        padding: 30px;
+        text-align: center;
+        text-shadow: 0 6px 50px rgba(220,230,240,.9);
+        line-height: .8;
+        transform: perspective(131px) rotateZ(-9deg) rotateX(1deg);
+        text-transform: uppercase;
+
+        background: linear-gradient(90deg, rgba(0,0,0,0), rgba(255,255,255,1));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    &.heading::after {
+        box-shadow: 0 0 100px rgba(255,255,255,.3);
+        position: absolute;
+        top: 0; bottom: 0;
+        left: 0; right: 0;
+        content: "";
+    }
+}
+
+.background {
+    position: fixed;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    background-image: url('bg.jpg');
+    background-size: cover;
+    background-position: 50% 100%;
+}
+.pigeons {
+    height: 100%;
+}
+.shadow {
+    display: block;
+    box-shadow: 0 0 200px 30px rgba(0,0,0,1);
+    width: 10%;
+    position: relative;
+    top: 300px; left: 250px;
+}
+.leg, .body {
+    position: absolute;
+}
+.body {
+    left: 0; top: 0;
+    z-index: 1;
+}
+.leg {
+    z-index: 0;
+    &.fore {
+        @include animation('wheel .75s linear infinite');
+        top: 140px;
+        left: 240px;
+    }
+    &.hind {
+        @include animation('wheel 1.3s linear infinite');
+        top: 215px;
+        left: 140px;
+    }
+}
+.pigeon {
+    @include animation('l2r 5s linear infinite');
+    position: relative;
+    z-index: 1;
+
+    .wobble {
+        @include animation('wobble .5s ease-in-out infinite');
+    }
+    &::after {
+        content: "";
+        position: relative;
+        display: block;
+        box-shadow: 0 0 200px 50px rgba(1,1,1,.5);
+        width: 30%;
+        top: 350px;
+        z-index: -1;
+    }
+
+    &.flip {
+        transform: scaleX(-1);
+    }
+    &:nth-child(1) {
+    }
+    &:nth-child(2) {
+        @include animation('r2l 5s linear -2.5s infinite');
+    }
+    &:nth-child(3) {
+        @include animation('r2l 7s linear -4s infinite');
+        top: 50%;
+    }
+    &:nth-child(4) {
+        @include animation('l2r 7s linear -4s infinite');
+        top: 75%;
+    }
+}
