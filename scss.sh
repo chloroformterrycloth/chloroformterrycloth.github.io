@@ -1,4 +1,4 @@
 #!/bin/bash
 
 . ./activate 
-sed 1d styles.scss | python -mscss >styles.css
+sed 1d $1 | python -mscss >styles.css
